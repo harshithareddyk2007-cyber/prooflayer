@@ -1,0 +1,41 @@
+{
+  "name": "prooflayer-local-repository",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"npm:server:dev\" \"npm:client:dev\"",
+    "server:dev": "tsx watch server/index.ts",
+    "client:dev": "vite --host 127.0.0.1",
+    "typecheck:server": "tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --strict --skipLibCheck --esModuleInterop server/index.ts server/scanner/sqlInjectionScanner.ts",
+    "test:patch-review": "tsx --test server/scanner/patchReviewManager.test.ts",
+    "test:fix-verification": "tsx --test server/scanner/sqlInjectionFixVerifier.test.ts",
+    "test:dependencies": "tsx --test server/scanner/dependencyAuditor.test.ts",
+    "test:activity-log": "tsx --test server/activityLog.test.ts",
+    "test": "npm run test:patch-review && npm run test:fix-verification && npm run test:dependencies && npm run test:activity-log",
+    "build": "tsc -b && npm run typecheck:server && vite build",
+    "start": "tsx server/index.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "~5.7.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.3",
+    "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "tsx": "^4.19.2",
+    "vite": "^6.0.5"
+  },
+  "overrides": {
+    "rollup": "4.59.0"
+  }
+}
